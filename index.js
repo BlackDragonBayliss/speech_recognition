@@ -12,24 +12,46 @@
 
   //Event listener
   recognition.addEventListener('result', e => {
-    const transcript = Array.from(e.results)
+    var transcript = Array.from(e.results)
       .map(result => result[0])
       .map(result => result.transcript)
       .join('');
 
-      // const poopScript = transcript.replace(/poop|poo|shit|dump/gi, '💩');
       p.textContent = transcript;
-
-      if (e.results[0].isFinal) {
-        // p = document.createElement('p');
-        // words.appendChild(p);
-        // console.log(typeof transcript)
-        document.body.style.backgroundColor = transcript;
+      
+      var listWords = transcript.split(" ");
+      var firstWord = listWords[0];
+      var listWordsFirstRemoved = "";
+      var listIndex = 0;
+      
+      listWords.forEach(function(element){
+        if(listIndex != 0){
+          listWordsFirstRemoved += " " +element;
+        }
+        listIndex++
+      });
+      // first index leading space removed
+      listWordsFirstRemoved = listWordsFirstRemoved.substr(1);
+      
+      
+      console.log(firstWord);
+      if(firstWord == "background"){
+        document.body.style.backgroundColor = listWordsFirstRemoved;
+        transcript = [];
       }
-      // if()
-      // document.body.style.backgroundColor = "red";
+      if(firstWord == "console"){
+        console.log(listWordsFirstRemoved);
+        transcript = [];
+      }
+      
+      
+      if (e.results[0].isFinal) {
+        p = document.createElement('p');
+        words.appendChild(p);
+      }
+      
   });
-
-  // recognition.addEventListener('end', recognition.start);
+  recognition.addEventListener('end', recognition.start);
+  
 
   recognition.start();
